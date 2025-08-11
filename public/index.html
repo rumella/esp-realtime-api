@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ESP Realtime</title></head>
+<body>
+  <h1>Anlık Veri</h1>
+  <div id="out">Yükleniyor...</div>
+  <script>
+    const API = ""; // boş bırak: aynı domainden çağır
+    async function tick() {
+      try {
+        const r = await fetch(API + "/data/latest");
+        const j = await r.json();
+        document.getElementById('out').textContent =
+          j.latest ? `${j.latest.sensor}: ${j.latest.value} @ ${new Date(j.latest.ts).toLocaleTimeString()}` : "Veri yok";
+      } catch (e) {
+        document.getElementById('out').textContent = "Hata";
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
